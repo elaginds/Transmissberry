@@ -1,0 +1,11 @@
+{
+  "address": "",
+  "port": "",
+  "telegramid": "",
+  "requestInterval": "",
+  "proxy_host": "",
+  "proxy_port": "",
+  "proxy_username": "",
+  "proxy_password": "",
+  "downloadDir": ""
+}

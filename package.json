@@ -1,0 +1,10 @@
+{
+  "name": "Transmissberry",
+  "version": "1.0.0",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.30.0",
+    "request": "latest",
+    "socks5-https-client": "^1.2.1",
+    "telegram-bot-api": "^1.3.3"
+  }
+}
