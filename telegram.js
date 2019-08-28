@@ -16,7 +16,7 @@ let chatId = null;
 
 /* Информация по закачкам,
  * приходит из sendInfo */
-let info = 'Нет активных закачек';
+let info = ['Нет активных закачек'];
 
 /* Отправляем список завершенных закачек */
 module.exports.sendCompleted = function(names, id) {
@@ -38,10 +38,17 @@ module.exports.sendInfo = function(tr_info, id) {
 
     createTelegramBot(id);
 
-    if (info && info.length) {
-        info = tr_info.join('\n');
+    if (tr_info && tr_info.length) {
+
+        const newTorrents = separateNewTorrents(tr_info);
+
+        if (newTorrents.length) {
+            bot.sendMessage(chatId, `Добавлен новый торрент: \n ${newTorrents.join('\n')}`);
+        }
+
+        info = tr_info;
     } else {
-        info = 'Нет активных закачек';
+        info = ['Нет активных закачек'];
     }
 
     if (doCheck) {
@@ -96,6 +103,27 @@ function createOptions() {
     return options;
 }
 
+/* ПРоверяет, появились ли новые закачки */
+function separateNewTorrents(tr_info) {
+    let newTorrents = [];
+
+    tr_info.forEach(newItem => {
+        let flag = false;
+        info.forEach(oldItem => {
+            const oldName = oldItem.substr(0, oldItem.indexOf(' '));
+            const newName = oldItem.substr(0, newItem.indexOf(' '));
+            if (oldName === newName) {
+                flag = true;
+            }
+        });
+        if (flag === false) {
+            newTorrents.push(newItem);
+        }
+    });
+
+    return newTorrents;
+}
+
 /* Получили /hello - отправляем сообщение,
  * нужно только чтобы запоминать ID чата без действий */
 function onHello() {
@@ -104,7 +132,7 @@ function onHello() {
 
 /* Получили /info - отправили INFO в ответ */
 function onInfo() {
-    bot.sendMessage(chatId, info);
+    bot.sendMessage(chatId, info.join('\n'));
 }
 
 /* Получили /check - начали или закончили

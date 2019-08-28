@@ -1,11 +1,11 @@
 {
-  "address": "",
-  "port": "",
-  "telegramid": "",
-  "requestInterval": "",
-  "proxy_host": "",
-  "proxy_port": "",
-  "proxy_username": "",
-  "proxy_password": "",
-  "downloadDir": ""
+  "address": "79.164.63.113",
+  "port": "9091",
+  "telegramid": "264486644:AAEctsBwChYfpbs8M9dalmD5q7PdOBl_tzc",
+  "requestInterval": "3000",
+  "proxy_host": "212.24.98.140",
+  "proxy_port": 1080,
+  "proxy_username": "eds",
+  "proxy_password": "rknher",
+  "downloadDir": "/home/pi/mcleod/NEW"
 }

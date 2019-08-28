@@ -22,10 +22,8 @@ function runIntervalRequests() {
                 const completed = separateCompletedTorrents(torrents);
 
                 if (completed && completed.ids && completed.ids.length) {
-                    api.removeCompletedTorrents(completed.ids)
-                        .then(() => {
-                            telegram.sendCompleted(completed.names, config.telegramid);
-                        });
+                    api.removeCompletedTorrents(completed.ids);
+                    telegram.sendCompleted(completed.names, config.telegramid);
                 }
 
                 telegram.sendInfo(prepareTorrentsNames(torrents), config.telegramid);
@@ -65,7 +63,7 @@ function prepareTorrentsNames(torrents) {
     const res = [];
 
     torrents.forEach(function(val){
-        res.push(`${val['name']} - ${parseFloat(val['percentDone']) * 100}%`)
+        res.push(`${val['name']} - ${(parseFloat(val['percentDone']) * 100).toFixed(2)}%`)
     });
 
     return res;
