@@ -56,11 +56,24 @@ module.exports.sendInfo = function(tr_info, id) {
     }
 };
 
+/* Сохраняем список закачек в info,
+ * если активно doCheck - отправляем в телеграмм */
+module.exports.sendError = function(error) {
+    if (doCheck) {
+        bot.sendMessage(chatId, error);
+    }
+};
+
+
+module.exports.createBot = function(token) {
+    createTelegramBot(token);
+};
+
 /* Запускаем бота и вешаем реакцию на входящие сообщения */
 function createTelegramBot(token) {
     if (!bot && token) {
         bot = new TelegramBot(token, createOptions());
-
+        console.log('bot', !!bot);
         bot.on('message', (msg) => {
             chatId = msg['chat']['id'];
 
@@ -127,6 +140,7 @@ function separateNewTorrents(tr_info) {
 /* Получили /hello - отправляем сообщение,
  * нужно только чтобы запоминать ID чата без действий */
 function onHello() {
+    console.log('hello');
     bot.sendMessage(chatId, 'Я тебя запомнил.');
 }
 

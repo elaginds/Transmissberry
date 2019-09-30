@@ -1,4 +1,5 @@
-const request = require("request");
+const request = require('request');
+const errorService = require('error');
 
 /* Конфиг, должен прийти из transmission.js */
 let config = null;
@@ -114,7 +115,7 @@ function createBody(type, options) {
 
 /* Получаем ID сессии трансмиссии */
 function requestSessionId() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         request({
             method: 'POST',
             url: createLink(),
@@ -130,6 +131,14 @@ function requestSessionId() {
                 this.sessionId = sessionId;
 
                 resolve(sessionId);
+            } else {
+                if (error) {
+                    errorService.error('transmission_session_id', error);
+                } else {
+                    errorService.error('transmission_session_id', response);
+                }
+
+                reject(null);
             }
         });
     });

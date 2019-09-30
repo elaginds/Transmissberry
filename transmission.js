@@ -8,7 +8,9 @@ module.exports.start = function() {
         return false;
     }
 
+    telegram.createBot(config.telegramid);
     runIntervalRequests();
+
 
     return true;
 };
