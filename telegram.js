@@ -56,16 +56,21 @@ module.exports.sendInfo = function(tr_info, id) {
     }
 };
 
-/* Сохраняем список закачек в info,
- * если активно doCheck - отправляем в телеграмм */
+/* Присылаем в телеграм ошибки */
 module.exports.sendError = function(error) {
-    if (doCheck) {
-        bot.sendMessage(chatId, error);
-    }
+    console.log('TG', chatId, error);
+
+    return new Promise( resolve => {
+        if (chatId) {
+            bot.sendMessage(chatId, error);
+            resolve(true);
+        }
+    });
 };
 
 
 module.exports.createBot = function(token) {
+    console.log('create', token);
     createTelegramBot(token);
 };
 

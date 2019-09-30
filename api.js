@@ -1,5 +1,5 @@
 const request = require('request');
-const errorService = require('error');
+const errorService = require('./error');
 
 /* Конфиг, должен прийти из transmission.js */
 let config = null;
@@ -18,9 +18,13 @@ module.exports.getAllTorrents = function(conf) {
         if (sessionId) {
             resolve(getAll());
         } else {
-            requestSessionId().then(() => {
-                resolve(getAll());
-            });
+            requestSessionId()
+                .then(() => {
+                    resolve(getAll());
+                },
+                error => {
+                    console.log(error);
+                });
         }
 
 
@@ -70,7 +74,15 @@ function getAll() {
             },
             body: createBody('all')
         }, function (error, response, body) {
-            resolve(JSON.parse(body));
+            if (!error && body) {
+                try {
+                    resolve(JSON.parse(body));
+                } catch (e) {
+                    errorService.error('transmission_get_all', body);
+                }
+            } else {
+                errorService.error('transmission_get_all', error);
+            }
         });
     });
 }
@@ -130,6 +142,8 @@ function requestSessionId() {
 
                 this.sessionId = sessionId;
 
+                errorService.error('transmission_session_id', false);
+
                 resolve(sessionId);
             } else {
                 if (error) {
@@ -138,7 +152,7 @@ function requestSessionId() {
                     errorService.error('transmission_session_id', response);
                 }
 
-                reject(null);
+                reject(error);
             }
         });
     });
