@@ -6,7 +6,7 @@ rememberErrors = {
 };
 
 module.exports.error = function(place, error) {
-    console.log('ERROR', place);
+    console.log('ERROR', place, error);
     if (place === 'transmission_session_id') {
         transmissionSessionIdError(error);
     }
