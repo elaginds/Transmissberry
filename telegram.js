@@ -64,6 +64,14 @@ module.exports.sendError = function(error) {
         if (chatId) {
             bot.sendMessage(chatId, error);
             resolve(true);
+        } else {
+            const interval = setInterval(() => {
+                if (chatId) {
+                    bot.sendMessage(chatId, error);
+                    clearInterval(interval);
+                    resolve(true);
+                }
+            })
         }
     });
 };
